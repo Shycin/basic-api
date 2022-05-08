@@ -1,22 +1,19 @@
-//const { collection, getDocs } = require("firebase/firestore"); 
-const firestore = require('./index');
+const firestore = require('./firestore');
 
 
-async function getCount() {
-    let count = 0;
+async function setNewEntry(collection = 'default', data = {}) {
 
-    /*const querySnapshot = await firestore.collection('users').get();
-    querySnapshot.forEach((doc) => {
-        count += 1;
-    });*/
-    const snapshot = await firestore.collection('users').get();
-        snapshot.forEach((doc) => {
-        count += 1;
-    });
-  
-    return count;
+    if(collection !== 'default')
+    {
+        // Add a new document with a generated id.
+        const res = await firestore.collection(collection).add(data).then((res) => {
+            console.log("res add", res)
+            return true
+        })
+    }
 }
 
-
   
-module.exports = getCount();
+module.exports = {
+    setNewEntry
+}
